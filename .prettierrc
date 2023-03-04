@@ -11,6 +11,13 @@
   "BracketSameLine": true,
   "overrides": [
     {
+      "files": "*.rb",
+      "options": {
+        "parser": "ruby",
+        "plugins": ["./node_modules/@prettier/plugin-ruby"]
+      }
+    },
+    {
       "files": "*.prettierrc",
       "options": {
         "parser": "json"
@@ -26,6 +33,12 @@
       "files": "*.jsx",
       "options": {
         "parser": "babel"
+      }
+    },
+    {
+      "files": "*.yml",
+      "options": {
+        "parser": "yaml"
       }
     }
   ]
