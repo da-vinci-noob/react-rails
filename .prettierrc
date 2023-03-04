@@ -1,0 +1,32 @@
+{
+  "semi": false,
+  "singleQuote": true,
+  "useTabs": false,
+  "tabWidth": 2,
+  "trailingComma": "none",
+  "printWidth": 80,
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "parser": "html",
+  "BracketSameLine": true,
+  "overrides": [
+    {
+      "files": "*.prettierrc",
+      "options": {
+        "parser": "json"
+      }
+    },
+    {
+      "files": "*.js",
+      "options": {
+        "parser": "babel"
+      }
+    },
+    {
+      "files": "*.jsx",
+      "options": {
+        "parser": "babel"
+      }
+    }
+  ]
+}
