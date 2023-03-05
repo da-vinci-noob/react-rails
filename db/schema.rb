@@ -10,7 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_04_143104) do
+ActiveRecord::Schema.define(version: 2023_03_05_074630) do
+
+  create_table "devise_api_tokens", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "resource_owner_type", null: false
+    t.bigint "resource_owner_id", null: false
+    t.string "access_token", null: false
+    t.string "refresh_token"
+    t.integer "expires_in", null: false
+    t.datetime "revoked_at", precision: 6
+    t.string "previous_refresh_token"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["access_token"], name: "index_devise_api_tokens_on_access_token"
+    t.index ["previous_refresh_token"], name: "index_devise_api_tokens_on_previous_refresh_token"
+    t.index ["refresh_token"], name: "index_devise_api_tokens_on_refresh_token"
+    t.index ["resource_owner_type", "resource_owner_id"], name: "index_devise_api_tokens_on_resource_owner"
+  end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", default: "", null: false

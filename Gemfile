@@ -56,6 +56,7 @@ gem 'htmlbeautifier'
 
 gem 'devise', '~> 4.9'
 gem 'rack-cors', '~> 2.0'
+gem 'devise-api', '~> 0.1.1'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
