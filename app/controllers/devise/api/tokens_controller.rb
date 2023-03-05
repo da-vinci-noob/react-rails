@@ -10,6 +10,7 @@ module Devise
 
       # rubocop:disable Metrics/AbcSize
       def sign_up
+        params[:referred_by_id] = User.find_by(email: params[:referred_by_id])&.id
         Devise.api.config.before_sign_up.call(sign_up_params, request, resource_class)
 
         service = Devise::Api::ResourceOwnerService::SignUp.new(
@@ -148,16 +149,15 @@ module Devise
       private
 
       def sign_up_params
-        params.permit(
-          :token,
+        params.except(:token).permit(
+          :referred_by_id,
           *resource_class.authentication_keys,
           *::Devise::ParameterSanitizer::DEFAULT_PERMITTED_ATTRIBUTES[:sign_up]
         ).to_h
       end
 
       def sign_in_params
-        params.permit(
-          :token,
+        params.except(:token).permit(
           *resource_class.authentication_keys,
           *::Devise::ParameterSanitizer::DEFAULT_PERMITTED_ATTRIBUTES[:sign_in]
         ).to_h

@@ -18,7 +18,7 @@ export default function SignIn() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (localStorage.getItem('isLoggedIn') == true) {
+    if (localStorage.getItem('isLoggedIn') == 'true') {
       navigate('/')
     }
   }, [])
@@ -38,8 +38,7 @@ export default function SignIn() {
         'http://localhost:3000/users/tokens/sign_in',
         {
           email: email,
-          password: password,
-          token: ''
+          password: password
         },
         {
           headers: {
@@ -56,6 +55,7 @@ export default function SignIn() {
   }
 
   const handleLogin = (data) => {
+    localStorage.setItem('isLoggedIn', true)
     localStorage.setItem('token', data.refresh_token)
     navigate('/')
   }
