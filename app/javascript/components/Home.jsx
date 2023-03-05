@@ -14,12 +14,16 @@ import axios from 'axios'
 import Header from './Header'
 import { useNavigate } from 'react-router-dom'
 import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
 
 const theme = createTheme()
 
 export default function HomePage() {
   const navigate = useNavigate()
   const [userData, setUserData] = useState()
+  const [referEmail, setReferEmail] = useState()
+  const [emailResponse, setEmailResponse] = useState({})
 
   useEffect(() => {
     if (localStorage.getItem('isLoggedIn') != 'true') {
@@ -49,6 +53,32 @@ export default function HomePage() {
     setUserData(data)
   }
 
+  const referUser = () => {
+    console.log(referEmail)
+    console.log(`http://localhost:3000/signup?referred_by=${userData?.email}`)
+    axios
+      .post(
+        'http://localhost:3000/api/v1/users/refer',
+        {
+          refer_email: referEmail,
+          refer_link: `http://localhost:3000/signup?referred_by=${userData?.email}`
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      )
+      .then(function (response) {
+        setEmailResponse({ status: 200, message: response.data.message })
+        console.log(response.data)
+      })
+      .catch(function (error) {
+        setEmailResponse({ message: error.response.data.message })
+      })
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Header userEmail={userData?.email} />
@@ -62,7 +92,16 @@ export default function HomePage() {
             alignItems: 'center'
           }}
         >
-          <h1>Referred Users List</h1>
+          <Typography
+            component="h1"
+            variant="h6"
+            color={emailResponse?.status == 200 ? 'green' : 'red'}
+          >
+            {emailResponse?.message}
+          </Typography>
+          <Typography component="h1" variant="h4">
+            Referred Users List
+          </Typography>
           <List
             dense
             sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
@@ -93,6 +132,25 @@ export default function HomePage() {
               userData?.email || ''
             }`}
           />
+
+          <TextField
+            sx={{
+              marginTop: 8,
+              marginBottom: 2
+            }}
+            fullWidth
+            id="email"
+            label="Email Refer Link"
+            name="email"
+            autoComplete="email"
+            value={referEmail || ''}
+            onChange={(event) => {
+              setReferEmail(event.target.value)
+            }}
+          />
+          <Button onClick={referUser} variant="contained">
+            Send
+          </Button>
         </Box>
       </Container>
     </ThemeProvider>
